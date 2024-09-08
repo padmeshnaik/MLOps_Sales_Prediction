@@ -3,31 +3,13 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'mlops-airflow-image'  // Your Docker image name
-        AWS_REGION = ''  // This will be set from the .env file
-        ECR_REPO_URI = ''  // This will be set from the .env file
-        AWS_ACCESS_KEY_ID = ''  // This will be set from the .env file
-        AWS_SECRET_ACCESS_KEY = ''  // This will be set from the .env file
+        AWS_REGION = credentials('aws-region')  // Jenkins credentials for AWS region
+        ECR_REPO_URI = credentials('ecr-repo-uri')  // Jenkins credentials for ECR repository URI
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // Jenkins credentials for AWS Access Key
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // Jenkins credentials for AWS Secret Key
     }
 
     stages {
-        stage('Load Environment Variables') {
-            steps {
-                script {
-                    def envFile = readFile 'airflow-docker/.env'
-                    def envMap = envFile.split('\n').collectEntries { line ->
-                        def parts = line.split('=')
-                        [(parts[0]): parts[1].trim()]
-                    }
-
-                    // Set environment variables from the .env file
-                    AWS_REGION = envMap.AWS_REGION
-                    ECR_REPO_URI = envMap.ECR_REPO_URI
-                    AWS_ACCESS_KEY_ID = envMap.AWS_ACCESS_KEY_ID
-                    AWS_SECRET_ACCESS_KEY = envMap.AWS_SECRET_ACCESS_KEY
-                }
-            }
-        }
-
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/padmeshnaik/MLOps_Sales_Prediction.git'
@@ -37,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${ECR_REPO_URI}:${DOCKER_IMAGE}", '-f airflow-docker/Dockerfile .')
+                    docker.build("${DOCKER_IMAGE}", '-f airflow-docker/Dockerfile .')
                 }
             }
         }
@@ -46,6 +28,9 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+                    aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+                    aws configure set region ${AWS_REGION}
                     $(aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI})
                     '''
                 }
@@ -55,7 +40,8 @@ pipeline {
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    sh 'docker push ${ECR_REPO_URI}:${DOCKER_IMAGE}'
+                    sh 'docker tag ${DOCKER_IMAGE}:latest ${ECR_REPO_URI}:latest'
+                    sh 'docker push ${ECR_REPO_URI}:latest'
                 }
             }
         }
