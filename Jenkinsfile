@@ -13,7 +13,7 @@ pipeline {
         stage('Load Environment Variables') {
             steps {
                 script {
-                    def envFile = readFile '.env'
+                    def envFile = readFile 'airflow-docker/.env'
                     def envMap = envFile.split('\n').collectEntries { line ->
                         def parts = line.split('=')
                         [(parts[0]): parts[1].trim()]
