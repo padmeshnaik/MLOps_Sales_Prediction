@@ -2,37 +2,42 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = 'https://github.com/padmeshnaik/MLOps_Sales_Prediction.git'  // Your GitHub repo
-        DOCKER_IMAGE = 'mlops-airflow-image'
-        ECR_REPOSITORY_URI = '585768184727.dkr.ecr.us-east-1.amazonaws.com/mlops-airflow'  // Replace with your ECR repo URI
-        AWS_REGION = 'us-east-1'  // Update with your region
+        DOCKER_IMAGE = 'mlops-airflow-image'  // Your Docker image name
+        AWS_REGION = ''  // This will be set from the .env file
+        ECR_REPO_URI = ''  // This will be set from the .env file
+        AWS_ACCESS_KEY_ID = ''  // This will be set from the .env file
+        AWS_SECRET_ACCESS_KEY = ''  // This will be set from the .env file
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Load Environment Variables') {
             steps {
-                git branch: 'main', url: "${REPO_URL}"
+                script {
+                    def envFile = readFile '.env'
+                    def envMap = envFile.split('\n').collectEntries { line ->
+                        def parts = line.split('=')
+                        [(parts[0]): parts[1].trim()]
+                    }
+
+                    // Set environment variables from the .env file
+                    AWS_REGION = envMap.AWS_REGION
+                    ECR_REPO_URI = envMap.ECR_REPO_URI
+                    AWS_ACCESS_KEY_ID = envMap.AWS_ACCESS_KEY_ID
+                    AWS_SECRET_ACCESS_KEY = envMap.AWS_SECRET_ACCESS_KEY
+                }
             }
         }
 
-        stage('Load .env file') {
+        stage('Clone Repository') {
             steps {
-                script {
-                    def envFile = readFile('~/MLOPS_pipeline/airflow-docker/.env')  // Replace with actual path to your .env file
-                    envFile.split('\n').each { line ->
-                        if (line.trim()) {
-                            def keyVal = line.split('=')
-                            env[keyVal[0].trim()] = keyVal[1].trim()
-                        }
-                    }
-                }
+                git branch: 'main', url: 'https://github.com/padmeshnaik/MLOps_Sales_Prediction.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}", '-f ./Dockerfile .')
+                    docker.build("${ECR_REPO_URI}:${DOCKER_IMAGE}", '-f airflow-docker/Dockerfile .')
                 }
             }
         }
@@ -41,7 +46,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}
+                    $(aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO_URI})
                     """
                 }
             }
@@ -50,10 +55,7 @@ pipeline {
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    sh """
-                    docker tag ${DOCKER_IMAGE}:latest ${ECR_REPOSITORY_URI}:latest
-                    docker push ${ECR_REPOSITORY_URI}:latest
-                    """
+                    sh 'docker push ${ECR_REPO_URI}:${DOCKER_IMAGE}'
                 }
             }
         }
