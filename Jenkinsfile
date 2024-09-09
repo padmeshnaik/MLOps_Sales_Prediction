@@ -53,7 +53,7 @@ pipeline {
                 script {
                     // Fetch the crumb first
                     def crumbJson = sh(
-                        script: 'curl -u "your-jenkins-username:your-jenkins-api-token" http://localhost:8080/crumbIssuer/api/json',
+                        script: 'curl -u "padmesh:1114baba01586829f8857a001528b15330" http://localhost:8080/crumbIssuer/api/json',
                         returnStdout: true
                     ).trim()
 
