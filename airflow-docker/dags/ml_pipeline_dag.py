@@ -45,7 +45,13 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-dag = DAG('ml_pipeline', default_args=default_args, schedule_interval=timedelta(days=1))
+# Set catchup to False and remove schedule_interval to make the DAG event-driven
+dag = DAG(
+    'ml_pipeline',
+    default_args=default_args,
+    catchup=False,
+    schedule_interval=None,  # No interval; it will be triggered manually
+)
 
 download_task = PythonOperator(
     task_id='download_data_from_s3',

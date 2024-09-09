@@ -1,0 +1,24 @@
+[2024-09-09T02:20:12.420+0000] {taskinstance.py:1087} INFO - Dependencies all met for <TaskInstance: ml_pipeline.upload_preprocessed_data_to_s3 manual__2024-09-09T02:20:07.698216+00:00 [queued]>
+[2024-09-09T02:20:12.431+0000] {taskinstance.py:1087} INFO - Dependencies all met for <TaskInstance: ml_pipeline.upload_preprocessed_data_to_s3 manual__2024-09-09T02:20:07.698216+00:00 [queued]>
+[2024-09-09T02:20:12.432+0000] {taskinstance.py:1283} INFO - 
+--------------------------------------------------------------------------------
+[2024-09-09T02:20:12.432+0000] {taskinstance.py:1284} INFO - Starting attempt 1 of 2
+[2024-09-09T02:20:12.432+0000] {taskinstance.py:1285} INFO - 
+--------------------------------------------------------------------------------
+[2024-09-09T02:20:12.444+0000] {taskinstance.py:1304} INFO - Executing <Task(PythonOperator): upload_preprocessed_data_to_s3> on 2024-09-09 02:20:07.698216+00:00
+[2024-09-09T02:20:12.449+0000] {standard_task_runner.py:55} INFO - Started process 6421 to run task
+[2024-09-09T02:20:12.452+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'ml_pipeline', 'upload_preprocessed_data_to_s3', 'manual__2024-09-09T02:20:07.698216+00:00', '--job-id', '178', '--raw', '--subdir', 'DAGS_FOLDER/ml_pipeline_dag.py', '--cfg-path', '/tmp/tmpxhkss5eo']
+[2024-09-09T02:20:12.454+0000] {standard_task_runner.py:83} INFO - Job 178: Subtask upload_preprocessed_data_to_s3
+[2024-09-09T02:20:12.498+0000] {task_command.py:389} INFO - Running <TaskInstance: ml_pipeline.upload_preprocessed_data_to_s3 manual__2024-09-09T02:20:07.698216+00:00 [running]> on host 65fe11240ea2
+[2024-09-09T02:20:12.662+0000] {taskinstance.py:1513} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=ml_pipeline
+AIRFLOW_CTX_TASK_ID=upload_preprocessed_data_to_s3
+AIRFLOW_CTX_EXECUTION_DATE=2024-09-09T02:20:07.698216+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2024-09-09T02:20:07.698216+00:00
+[2024-09-09T02:20:12.671+0000] {credentials.py:1120} INFO - Found credentials in environment variables.
+[2024-09-09T02:20:13.063+0000] {python.py:177} INFO - Done. Returned value was: None
+[2024-09-09T02:20:13.071+0000] {taskinstance.py:1327} INFO - Marking task as SUCCESS. dag_id=ml_pipeline, task_id=upload_preprocessed_data_to_s3, execution_date=20240909T022007, start_date=20240909T022012, end_date=20240909T022013
+[2024-09-09T02:20:13.110+0000] {local_task_job.py:159} INFO - Task exited with return code 0
+[2024-09-09T02:20:13.131+0000] {taskinstance.py:2582} INFO - 1 downstream tasks scheduled from follow-on schedule check
