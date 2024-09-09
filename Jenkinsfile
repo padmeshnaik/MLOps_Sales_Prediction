@@ -20,10 +20,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}", '-f airflow-docker/Dockerfile .')
+                    docker.build("${DOCKER_IMAGE}", '--no-cache -f airflow-docker/Dockerfile .')
                 }
             }
         }
+
 
         stage('Login to AWS ECR') {
             steps {
@@ -98,8 +99,10 @@ pipeline {
         stage('Run MLflow UI') {
             steps {
                 script {
-                    // Use `python -m mlflow` to run MLflow UI
-                    sh 'python3 -m mlflow ui --host 0.0.0.0 --port 5001'
+                    // Run MLflow UI in the background
+                    sh '''
+                    mlflow ui --host 0.0.0.0 --port 5001 &
+                    '''
                 }
             }
         }
