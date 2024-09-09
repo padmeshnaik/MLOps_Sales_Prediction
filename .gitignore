@@ -1,2 +1,2 @@
 .env
-logs/
+airflow-docker/logs/
