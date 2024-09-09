@@ -7,6 +7,7 @@ pipeline {
         ECR_REPO_URI = credentials('ecr-repo-uri')  // Jenkins credentials for ECR repository URI
         AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // Jenkins credentials for AWS Access Key
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // Jenkins credentials for AWS Secret Key
+        EMAIL_RECIPIENTS = 'padmeshnaik22@gmail.com'    
     }
 
     stages {
