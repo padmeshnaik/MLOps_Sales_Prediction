@@ -92,13 +92,7 @@ pipeline {
                 subject: "Jenkins Build: ${currentBuild.fullDisplayName}",
                 body: """<p>Build Status: ${currentBuild.currentResult}</p>
                           <p>Check console output at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                to: "${env.EMAIL_RECIPIENTS}",
-                from: 'naikpaddy12@gmail.com',
-                mimeType: 'text/html',
-                replyTo: 'padmeshnaik22@gmail.com',
-                smtpHost: 'smtp.gmail.com',
-                smtpPort: '465',
-                useSsl: true
+                to: "${env.EMAIL_RECIPIENTS}"
             )
         }
         success {
