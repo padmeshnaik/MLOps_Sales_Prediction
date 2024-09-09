@@ -51,30 +51,19 @@ pipeline {
         stage('Trigger Airflow DAG') {
     steps {
         script {
-            // Fetch the Jenkins crumb using a JSON parser
-            def crumbData = sh(
-                script: 'curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json',
-                returnStdout: true
-            ).trim()
-
-            def crumbJson = readJSON text: crumbData
-            def crumbField = crumbJson.crumbRequestField
-            def crumbValue = crumbJson.crumb
-
-            // Debugging: Print the values to check if crumb is correctly parsed
-            echo "Crumb Field: ${crumbField}"
-            echo "Crumb Value: ${crumbValue}"
-
-            // Use the crumb in the curl request
-            sh """
-                curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
-                --header 'Content-Type: application/json' \
-                --header '${crumbField}: ${crumbValue}' \
-                --data '{\"dag_run_id\": \"jenkins_trigger_${new Date().format('yyyyMMddHHmmss')}\"}'
-            """
+            // Use basic authentication to trigger the Airflow DAG without CSRF issues
+            sh '''
+                curl -X POST --user "admin:admin" \
+                --header "Content-Type: application/json" \
+                --data '{
+                    "dag_run_id": "jenkins_trigger_${new Date().format("yyyyMMddHHmmss")}"
+                }' \
+                http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns
+            '''
         }
     }
 }
+
 
 
 
