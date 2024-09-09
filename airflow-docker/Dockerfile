@@ -10,7 +10,6 @@ COPY airflow-docker/requirements.txt /app/requirements.txt
 # Install dependencies using the correct pip linked to the global Python environment
 RUN /usr/local/bin/python -m pip install --no-cache-dir -r /app/requirements.txt
 
-
 # Copy DAGs into the container
 COPY airflow-docker/dags /opt/airflow/dags
 
