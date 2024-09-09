@@ -70,11 +70,12 @@ pipeline {
                 curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
                 --header 'Content-Type: application/json' \
                 --header '${crumbField}: ${crumbValue}' \
-                --data '{"dag_run_id": "jenkins_trigger_${new Date().format('yyyyMMddHHmmss')}"}'
+                --data '{\"dag_run_id\": \"jenkins_trigger_${new Date().format('yyyyMMddHHmmss')}\"}'
             """
         }
     }
 }
+
 
 
 
