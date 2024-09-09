@@ -67,13 +67,19 @@ pipeline {
         }
 
         stage('Build and Run Flask App') {
-                steps {
-                    script {
-                        sh 'docker build -t flask-app-image -f flask-app/Dockerfile .'
-                        sh 'docker run -d -p 5000:5000 flask-app-image'
-                    }
+            steps {
+                script {
+                    sh '''
+                    docker build -t flask-app-image -f flask-app/Dockerfile .
+                    docker run -d -p 5000:5000 \
+                        -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                        -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                        flask-app-image
+                    '''
                 }
             }
+        }
+
 
 
 
