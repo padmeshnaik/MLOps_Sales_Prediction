@@ -49,19 +49,20 @@ pipeline {
         }
 
         stage('Trigger Airflow DAG') {
-            steps {
-                script {
-                    sh '''
-                    curl -X POST --user padmesh:Neo1947\$ \
-                    http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
-                    --header "Content-Type: application/json" \
-                    --data '{
-                        "dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"
-                    }'
-                    '''
-                }
-            }
+    steps {
+        script {
+            sh """
+            curl -X POST --user padmesh:Neo1947\\$ \
+            http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
+            --header "Content-Type: application/json" \
+            --data '{
+                "dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"
+            }'
+            """
         }
+    }
+}
+
 
 
 
