@@ -62,7 +62,18 @@ pipeline {
                     '''
                 }
             }
+
+
         }
+
+        stage('Build and Run Flask App') {
+                steps {
+                    script {
+                        sh 'docker build -t flask-app-image -f flask-app/Dockerfile .'
+                        sh 'docker run -d -p 5000:5000 flask-app-image'
+                    }
+                }
+            }
 
 
 
