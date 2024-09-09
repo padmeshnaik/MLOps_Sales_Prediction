@@ -95,6 +95,16 @@ pipeline {
             }
         }
 
+        stage('Run MLflow UI') {
+            steps {
+                script {
+                    // Run MLflow UI in the background
+                    sh '''
+                    mlflow ui --host 0.0.0.0 --port 5001 &
+                    '''
+                }
+            }
+        }
 
 
 
