@@ -3,7 +3,6 @@ FROM apache/airflow:2.5.0
 # Set the working directory in the container
 WORKDIR /app
 
-
 # Copy the requirements.txt from the airflow directory into the container
 COPY airflow-docker/requirements.txt /app/requirements.txt
 
