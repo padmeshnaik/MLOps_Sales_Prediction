@@ -63,13 +63,16 @@ pipeline {
 
                     // Trigger Airflow DAG with the crumb
                     sh '''
-                    curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
-                    --header 'Content-Type: application/json' \
-                    --header '${crumbRequestField}: ${crumb}' \
-                    --data '{
-                        "dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"
-                    }'
-                    '''
+                        crumb=$(curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json | jq -r '.crumb')
+                        crumbRequestField=$(curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json | jq -r '.crumbRequestField')
+
+                        curl -X POST http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns \
+                        --header "Content-Type: application/json" \
+                        --header "$crumbRequestField: $crumb" \
+                        --data '{
+                            "dag_run_id": "jenkins_trigger_'$(date +%Y%m%d%H%M%S)'"
+                        }'
+                        '''
                     }
                 }
             }
