@@ -66,6 +66,21 @@ pipeline {
 
         }
 
+        stage('Stop Existing Flask Container') {
+            steps {
+                script {
+                    // Stop the existing container if running
+                    sh '''
+                    CONTAINER_ID=$(docker ps -q --filter "ancestor=flask-app-image")
+                    if [ "$CONTAINER_ID" ]; then
+                        docker stop $CONTAINER_ID
+                        docker rm $CONTAINER_ID
+                    fi
+                    '''
+                }
+            }
+        }
+
         stage('Build and Run Flask App') {
             steps {
                 script {
