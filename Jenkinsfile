@@ -51,13 +51,26 @@ pipeline {
         stage('Trigger Airflow DAG') {
             steps {
                 script {
+                    // Fetch the crumb first
+                    def crumbJson = sh(
+                        script: 'curl -u "your-jenkins-username:your-jenkins-api-token" http://localhost:8080/crumbIssuer/api/json',
+                        returnStdout: true
+                    ).trim()
+
+                    // Extract crumb and crumb request field
+                    def crumb = readJSON(text: crumbJson).crumb
+                    def crumbRequestField = readJSON(text: crumbJson).crumbRequestField
+
+                    // Trigger Airflow DAG with the crumb
                     sh '''
                     curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
                     --header 'Content-Type: application/json' \
+                    --header '${crumbRequestField}: ${crumb}' \
                     --data '{
                         "dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"
                     }'
                     '''
+                    }
                 }
             }
         }
