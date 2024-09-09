@@ -61,6 +61,10 @@ pipeline {
             def crumbField = crumbJson.crumbRequestField
             def crumbValue = crumbJson.crumb
 
+            // Debugging: Print the values to check if crumb is correctly parsed
+            echo "Crumb Field: ${crumbField}"
+            echo "Crumb Value: ${crumbValue}"
+
             // Use the crumb in the curl request
             sh """
                 curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
@@ -71,6 +75,7 @@ pipeline {
         }
     }
 }
+
 
 
 
