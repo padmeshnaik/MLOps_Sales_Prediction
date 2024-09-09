@@ -49,27 +49,28 @@ pipeline {
         }
 
         stage('Trigger Airflow DAG') {
-            steps {
-                script {
-                    // Fetch the Jenkins crumb
-                    def crumbData = sh(
-                        script: 'curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json',
-                        returnStdout: true
-                    ).trim()
+    steps {
+        script {
+            // Fetch the Jenkins crumb
+            def crumbData = sh(
+                script: 'curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json',
+                returnStdout: true
+            ).trim()
 
-                    def crumbField = crumbData.tokenize(':')[0]
-                    def crumbValue = crumbData.tokenize(':')[1].replace('"', '').trim()
+            def crumbField = crumbData.tokenize(':')[0].trim()
+            def crumbValue = crumbData.tokenize(':')[1].replace('"', '').trim()
 
-                    // Use the crumb in the curl request
-                    sh """
-                        curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
-                        --header 'Content-Type: application/json' \
-                        --header '${crumbField}: ${crumbValue}' \
-                        --data '{"dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"}'
-                    """
-                }
-            }
+            // Use the crumb in the curl request
+            sh """
+                curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
+                --header 'Content-Type: application/json' \
+                --header '${crumbField}: ${crumbValue}' \
+                --data '{"dag_run_id": "jenkins_trigger_${new Date().format('yyyyMMddHHmmss')}"}'
+            """
         }
+    }
+}
+
 
         
     }
