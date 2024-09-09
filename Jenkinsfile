@@ -51,7 +51,7 @@ pipeline {
 stage('Trigger Airflow DAG') {
     steps {
         script {
-            sh '''
+            sh """
             run_id=$(date +%Y%m%d%H%M%S)_$(date +%N)
             curl -X POST --user padmesh:Neo1947\\$ \
             http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
@@ -59,7 +59,7 @@ stage('Trigger Airflow DAG') {
             --data \'{
                 "dag_run_id": "jenkins_trigger_${run_id}"
             }\'
-            '''
+            """
         }
     }
 }
