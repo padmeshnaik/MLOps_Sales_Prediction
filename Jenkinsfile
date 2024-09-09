@@ -56,16 +56,17 @@ pipeline {
                         script: 'curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json',
                         returnStdout: true
                     ).trim()
+
                     def crumbField = crumbData.tokenize(':')[0]
-                    def crumbValue = crumbData.tokenize(':')[1]
+                    def crumbValue = crumbData.tokenize(':')[1].replace('"', '').trim()
 
                     // Use the crumb in the curl request
-                    sh '''
+                    sh """
                         curl -X POST 'http://localhost:8080/api/v1/dags/ml_pipeline/dagRuns' \
                         --header 'Content-Type: application/json' \
                         --header '${crumbField}: ${crumbValue}' \
                         --data '{"dag_run_id": "jenkins_trigger_$(date +%Y%m%d%H%M%S)"}'
-                    '''
+                    """
                 }
             }
         }
