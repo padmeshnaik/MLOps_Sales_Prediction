@@ -53,7 +53,7 @@ pipeline {
         script {
             // Use basic authentication to trigger the Airflow DAG without CSRF issues
             sh '''
-                curl -X POST --user "admin:admin" \
+                curl -X POST --user "padmesh:Neo1947$" \
                 --header "Content-Type: application/json" \
                 --data '{
                     "dag_run_id": "jenkins_trigger_${new Date().format("yyyyMMddHHmmss")}"
