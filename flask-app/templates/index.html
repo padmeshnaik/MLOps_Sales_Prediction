@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Prediction</title>
+</head>
+<body>
+    <h1>Predict Item Outlet Sales</h1>
+    <form method="POST">
+        <label for="Item_MRP">Item MRP:</label>
+        <input type="text" id="Item_MRP" name="Item_MRP" required><br><br>
+        
+        <label for="Item_Weight">Item Weight:</label>
+        <input type="text" id="Item_Weight" name="Item_Weight" required><br><br>
+        
+        <label for="Outlet_Establishment_Year">Outlet Establishment Year:</label>
+        <input type="text" id="Outlet_Establishment_Year" name="Outlet_Establishment_Year" required><br><br>
+        
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <h2>Predicted Sales: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>
