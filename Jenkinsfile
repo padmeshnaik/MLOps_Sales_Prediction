@@ -51,14 +51,15 @@ pipeline {
         stage('Trigger Airflow DAG') {
     steps {
         script {
-            // Fetch the Jenkins crumb
+            // Fetch the Jenkins crumb using a JSON parser
             def crumbData = sh(
                 script: 'curl -u padmesh:1114baba01586829f8857a001528b15330 http://localhost:8080/crumbIssuer/api/json',
                 returnStdout: true
             ).trim()
 
-            def crumbField = crumbData.tokenize(':')[0].trim()
-            def crumbValue = crumbData.tokenize(':')[1].replace('"', '').trim()
+            def crumbJson = readJSON text: crumbData
+            def crumbField = crumbJson.crumbRequestField
+            def crumbValue = crumbJson.crumb
 
             // Use the crumb in the curl request
             sh """
@@ -70,6 +71,7 @@ pipeline {
         }
     }
 }
+
 
 
         
