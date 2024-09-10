@@ -25,6 +25,17 @@ pipeline {
             }
         }
 
+        stage('Run MLflow UI') {
+                steps {
+                    script {
+                        // Run MLflow UI in a Docker container on port 5002
+                        sh '''
+            docker run -d -p 5002:5000 --name mlflow-container my-mlflow
+            '''
+                    }
+                }
+            }
+
 
         stage('Login to AWS ECR') {
             steps {
@@ -96,16 +107,7 @@ pipeline {
             }
         }
 
-            stage('Run MLflow UI') {
-                steps {
-                    script {
-                        // Run MLflow UI in a Docker container on port 5002
-                        sh '''
-            docker run -d -p 5002:5000 --name mlflow-container my-mlflow
-            '''
-                    }
-                }
-            }
+            
 
     }
 
