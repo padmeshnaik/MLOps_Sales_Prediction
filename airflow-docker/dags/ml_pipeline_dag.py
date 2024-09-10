@@ -42,6 +42,7 @@ def upload_preprocessed_data_to_s3():
     s3.upload_file(LOCAL_PREPROCESSED_PATH, S3_BUCKET, versioned_key)
     DATA_VERSION += 1  # Increment the version after each upload
 
+
 def train_model():
     # Load the preprocessed data
     mlflow.set_tracking_uri("http://mlflow-container:5000")
