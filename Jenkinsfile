@@ -100,9 +100,9 @@ pipeline {
             steps {
                 script {
                     // Run MLflow UI in the background
-                    sh '''
-                    /home/padmesh/.local/bin/mlflow ui --host 0.0.0.0 --port 5001 &
-                    '''
+                     sh '''
+            echo "Current PATH is: $PATH"
+            '''
                 }
             }
         }
@@ -118,7 +118,7 @@ pipeline {
                 to: "${env.EMAIL_RECIPIENTS}"
             )
         }
-
+        
         success {
             emailext (
                 subject: "Jenkins Build Success: ${currentBuild.fullDisplayName}",
