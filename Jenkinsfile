@@ -107,26 +107,6 @@ pipeline {
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     }
 
     post {
@@ -138,6 +118,7 @@ pipeline {
                 to: "${env.EMAIL_RECIPIENTS}"
             )
         }
+        
         success {
             emailext (
                 subject: "Jenkins Build Success: ${currentBuild.fullDisplayName}",

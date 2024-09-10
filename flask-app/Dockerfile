@@ -12,7 +12,6 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Copy the rest of the Flask app files into the container
 COPY flask-app/ /app/
 
-
 # Set environment variables if needed (e.g., for AWS credentials, Flask environment)
 # ENV FLASK_ENV=development
 
