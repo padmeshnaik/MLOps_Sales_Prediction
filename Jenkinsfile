@@ -101,7 +101,7 @@ pipeline {
                 script {
                     // Run MLflow UI in the background
                     sh '''
-                    mlflow ui --host 0.0.0.0 --port 5001 &
+                    nohup mlflow ui --host 0.0.0.0 --port 5001 > mlflow.log 2>&1 &
                     '''
                 }
             }
