@@ -25,23 +25,24 @@ pipeline {
             }
         }
 
-        stage('Run MLflow UI') {
-            steps {
-                script {
-                    sh '''
-                    # Stop and remove the existing MLflow container if it's running
-                    CONTAINER_ID=$(docker ps -q --filter "name=mlflow-container")
-                    if [ "$CONTAINER_ID" ]; then
-                        docker stop $CONTAINER_ID
-                        docker rm $CONTAINER_ID
-                    fi
+            stage('Run MLflow UI') {
+                steps {
+                    script {
+                        sh '''
+                        # Stop and remove the existing MLflow container if it's running or stopped
+                        CONTAINER_ID=$(docker ps -aq --filter "name=mlflow-container")
+                        if [ "$CONTAINER_ID" ]; then
+                            docker stop $CONTAINER_ID
+                            docker rm $CONTAINER_ID
+                        fi
 
-                    # Run the new MLflow UI container
-                    docker run -d -p 5002:5000 --name mlflow-container my-mlflow
-                    '''
+                        # Run the new MLflow UI container
+                        docker run -d -p 5002:5000 --name mlflow-container my-mlflow
+                        '''
+                    }
                 }
             }
-        }
+
 
 
 
