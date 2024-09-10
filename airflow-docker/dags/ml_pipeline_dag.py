@@ -44,7 +44,7 @@ def upload_preprocessed_data_to_s3():
 
 def train_model():
     # Load the preprocessed data
-    mlflow.set_tracking_uri("http://172.17.0.1:5002")
+    mlflow.set_tracking_uri("http://mlflow-container:5000")
 
     df = pd.read_csv(LOCAL_PREPROCESSED_PATH)
     X = df[['Item_MRP', 'Item_Weight', 'Outlet_Establishment_Year']]  # Define your features
