@@ -26,15 +26,22 @@ pipeline {
         }
 
         stage('Run MLflow UI') {
-                steps {
-                    script {
-                        // Run MLflow UI in a Docker container on port 5002
-                        sh '''
-            docker run -d -p 5002:5000 --name mlflow-container my-mlflow
-            '''
-                    }
+            steps {
+                script {
+                    // Stop and remove the existing container if it's running
+                    sh '''
+                    CONTAINER_ID=$(docker ps -q --filter "name=mlflow-container")
+                    if [ "$CONTAINER_ID" ]; then
+                        docker stop $CONTAINER_ID
+                        docker rm $CONTAINER_ID
+                    fi
+
+                    // Run the new MLflow UI container
+                    docker run -d -p 5002:5000 --name mlflow-container my-mlflow
+                    '''
                 }
             }
+        }
 
 
         stage('Login to AWS ECR') {
