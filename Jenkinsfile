@@ -96,16 +96,16 @@ pipeline {
             }
         }
 
-        stage('Run MLflow UI') {
-            steps {
-                script {
-                    // Run MLflow UI in the background
-                    sh '''
-                    nohup mlflow ui --host 0.0.0.0 --port 5001 > mlflow.log 2>&1 &
-                    '''
+            stage('Run MLflow UI') {
+                steps {
+                    script {
+                        // Run MLflow UI in a Docker container on port 5002
+                        sh '''
+                        docker run -d -p 5002:5000 --name mlflow-container mlflow/mlflow:latest mlflow ui --host 0.0.0.0 --port 5000
+                        '''
+                    }
                 }
             }
-        }
 
     }
 
