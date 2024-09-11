@@ -72,20 +72,21 @@ pipeline {
         }
 
         stage('Trigger Airflow DAG') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'airflow-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    script {
-                        sh '''
-                        curl -X POST --user ${USERNAME}:${PASSWORD} \
-                        http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
-                        --header "Content-Type: application/json" \
-                        --data '{
-                            "conf": {}
-                        }'
-                        '''
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'airflow-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            script {
+                                sh '''
+                                curl -X POST --user ${USERNAME}:${PASSWORD} \
+                                http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
+                                --header "Content-Type: application/json" \
+                                --data '{
+                                    "conf": {}
+                                }'
+                                '''
+                            }
+                        }
                     }
-                }
-            }
+
 
         stage('Stop Existing Flask Container') {
             steps {
