@@ -38,7 +38,7 @@ pipeline {
                         fi
 
                         # Run the new MLflow UI container
-                        docker run -d -p 5002:5000 --name mlflow-container my-mlflow
+                        docker run -d --network mlops-network --name mlflow-container -p 5002:5000 my-mlflow
                         '''
                     }
                 }
