@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
         DOCKER_IMAGE = 'mlops-airflow-image'  // Your Docker image name
         AWS_REGION = credentials('aws-region')  // Jenkins credentials for AWS region
