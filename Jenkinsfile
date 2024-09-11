@@ -8,6 +8,8 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // Jenkins credentials for AWS Access Key
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // Jenkins credentials for AWS Secret Key
         EMAIL_RECIPIENTS = 'padmeshnaik22@gmail.com'    
+        USERNAME = credentials('username')  
+        ECR_REPO_URI = credentials('password')
     }
 
     stages {
@@ -72,20 +74,19 @@ pipeline {
 
         stage('Trigger Airflow DAG') {
             steps {
-                script {
-                    sh '''
-                    curl -X POST --user padmesh:Neo1947\\$ \
-                    http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
-                    --header "Content-Type: application/json" \
-                    --data '{
-                        "conf": {}
-                    }'
-                    '''
+                withCredentials([usernamePassword(credentialsId: 'airflow-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
+                        sh '''
+                        curl -X POST --user ${USERNAME}:${PASSWORD} \
+                        http://localhost:8081/api/v1/dags/ml_pipeline/dagRuns \
+                        --header "Content-Type: application/json" \
+                        --data '{
+                            "conf": {}
+                        }'
+                        '''
+                    }
                 }
             }
-
-
-        }
 
         stage('Stop Existing Flask Container') {
             steps {
