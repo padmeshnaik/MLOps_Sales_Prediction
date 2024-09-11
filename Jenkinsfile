@@ -86,6 +86,7 @@ pipeline {
                             }
                         }
                     }
+        }
 
 
         stage('Stop Existing Flask Container') {
