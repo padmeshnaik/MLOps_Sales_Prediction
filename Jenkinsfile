@@ -8,7 +8,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // Jenkins credentials for AWS Secret Key
         EMAIL_RECIPIENTS = 'padmeshnaik22@gmail.com'    
         USERNAME = credentials('username')  
-        ECR_REPO_URI = credentials('password')
+        PASSWORD = credentials('password')
     }
 
     stages {
