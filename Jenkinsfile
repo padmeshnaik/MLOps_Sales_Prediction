@@ -127,7 +127,7 @@ pipeline {
                 subject: "Jenkins Build: ${currentBuild.fullDisplayName}",
                 body: """<p>Build Status: ${currentBuild.currentResult}</p>
                           <p>Check console output at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                to: "${env.EMAIL_RECIPIENTS}"
+                to: "${EMAIL_RECIPIENTS}"
             )
         }
         
@@ -136,7 +136,7 @@ pipeline {
                 subject: "Jenkins Build Success: ${currentBuild.fullDisplayName}",
                 body: """<p>The build was successful!</p>
                           <p>Check details at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                to: "${env.EMAIL_RECIPIENTS}"
+                to: "${EMAIL_RECIPIENTS}"
             )
         }
         failure {
@@ -144,7 +144,7 @@ pipeline {
                 subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
                 body: """<p>Unfortunately, the build failed.</p>
                           <p>Check console output at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                to: "${env.EMAIL_RECIPIENTS}"
+                to: "${EMAIL_RECIPIENTS}"
             )
         }
     }
