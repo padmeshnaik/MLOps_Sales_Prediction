@@ -16,18 +16,18 @@ Monitoring and Logging: Comprehensive logging and monitoring using MLflow and Ai
 
 
 ├── airflow-docker     
-│   ├── dags                   # Airflow DAGs for pipeline automation     
-│   ├── Dockerfile              # Dockerfile for Airflow setup     
-│   └── requirements.txt        # Python dependencies for Airflow      
+│   ├── dags                       # Airflow DAGs for pipeline automation     
+│   ├── Dockerfile                 # Dockerfile for Airflow setup     
+│   └── requirements.txt           # Python dependencies for Airflow      
 ├── flask-app      
-│   ├── app.py                  # Flask application for serving model predictions     
-│   ├── Dockerfile              # Dockerfile for Flask app     
-│   └── requirements.txt        # Python dependencies for Flask app     
+│   ├── app.py                     # Flask application for serving model predictions     
+│   ├── Dockerfile                 # Dockerfile for Flask app     
+│   └── requirements.txt           # Python dependencies for Flask app     
 ├── mlflow       
-│   ├── Dockerfile              # Dockerfile for MLflow setup      
-│   └── experiment_tracking.py  # Script for managing model training and tracking with MLflow      
-├── Jenkinsfile                 # Jenkins pipeline definition      
-└── README.md                   # Project documentation     
+│   ├── Dockerfile                 # Dockerfile for MLflow setup      
+│   └── experiment_tracking.py     # Script for managing model training and tracking with MLflow      
+├── Jenkinsfile                    # Jenkins pipeline definition      
+└── README.md                      # Project documentation     
 
 
 Prerequisites
