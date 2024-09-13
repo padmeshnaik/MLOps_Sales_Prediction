@@ -16,7 +16,7 @@ Monitoring and Logging: Comprehensive logging and monitoring using MLflow and Ai
 
 
 ├── airflow-docker     
-│   ├── dags                                         # Airflow DAGs for pipeline automation     
+│   ├── dags                                               # Airflow DAGs for pipeline automation     
 │   ├── Dockerfile                 # Dockerfile for Airflow setup     
 │   └── requirements.txt           # Python dependencies for Airflow      
 ├── flask-app      
