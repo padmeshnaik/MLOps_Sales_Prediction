@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = 'mlops-airflow-image'  // Your Docker image name
+        MLFLOW_IMAGE = 'mlflow-image'  // MLflow Docker image name
+        FLASK_IMAGE = 'flask-app-image'  // Flask Docker image name
         AWS_REGION = credentials('aws-region')  // Jenkins credentials for AWS region
         ECR_REPO_URI = credentials('ecr-repo-uri')  // Jenkins credentials for ECR repository URI
         AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // Jenkins credentials for AWS Access Key
@@ -18,10 +20,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 script {
                     docker.build("${DOCKER_IMAGE}", '--no-cache -f airflow-docker/Dockerfile .')
+                    docker.build("${MLFLOW_IMAGE}", '--no-cache -f mlflow-docker/Dockerfile .')
+                    docker.build("${FLASK_IMAGE}", '--no-cache -f flask-app/Dockerfile .')
                 }
             }
         }
@@ -62,11 +66,20 @@ pipeline {
         }
 
 
-        stage('Push Docker Image to ECR') {
+        stage('Push Docker Images to ECR') {
             steps {
                 script {
-                    sh 'docker tag ${DOCKER_IMAGE}:latest ${ECR_REPO_URI}:latest'
-                    sh 'docker push ${ECR_REPO_URI}:latest'
+                    // Tag and Push the Airflow image
+                    sh 'docker tag ${DOCKER_IMAGE}:latest ${ECR_REPO_URI}:airflow-latest'
+                    sh 'docker push ${ECR_REPO_URI}:airflow-latest'
+
+                    // Tag and Push the MLflow image
+                    sh 'docker tag ${MLFLOW_IMAGE}:latest ${ECR_REPO_URI}:mlflow-latest'
+                    sh 'docker push ${ECR_REPO_URI}:mlflow-latest'
+
+                    // Tag and Push the Flask image
+                    sh 'docker tag ${FLASK_IMAGE}:latest ${ECR_REPO_URI}:flask-latest'
+                    sh 'docker push ${ECR_REPO_URI}:flask-latest'
                 }
             }
         }
