@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     docker.build("${DOCKER_IMAGE}", '--no-cache -f airflow-docker/Dockerfile .')
-                    docker.build("${MLFLOW_IMAGE}", '--no-cache -f mlflow-docker/Dockerfile .')
+                    docker.build("${MLFLOW_IMAGE}", '--no-cache -f Dockerfile .')
                     docker.build("${FLASK_IMAGE}", '--no-cache -f flask-app/Dockerfile .')
                 }
             }
