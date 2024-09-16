@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: airflow
+  template:
+    metadata:
+      labels:
+        app: airflow
+    spec:
+      containers:
+      - name: airflow
+        image: 585768184727.dkr.ecr.us-east-1.amazonaws.com/mlops-airflow:airflow-latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airflow-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: airflow
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

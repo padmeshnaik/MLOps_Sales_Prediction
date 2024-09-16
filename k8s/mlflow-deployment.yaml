@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlflow
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      containers:
+      - name: mlflow
+        image: 585768184727.dkr.ecr.us-east-1.amazonaws.com/mlops-airflow:mlflow-latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: AKIAYQYUBFOLRWGB7IK2
+        - name: AWS_SECRET_ACCESS_KEY
+          value: 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
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mlflow
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
