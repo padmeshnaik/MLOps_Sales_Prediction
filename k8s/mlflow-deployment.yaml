@@ -19,9 +19,16 @@ spec:
         - containerPort: 5000
         env:
         - name: AWS_ACCESS_KEY_ID
-          value: AKIAYQYUBFOLRWGB7IK2
+          valueFrom:
+           secretKeyRef:
+            name: aws-credentials
+            key: AWS_ACCESS_KEY_ID
         - name: AWS_SECRET_ACCESS_KEY
-          value: 8XOxtZAC3NFoZdw7K7YBQIL7EGpznISl7Tq7mRcW
+          valueFrom:
+           secretKeyRef:
+            name: aws-credentials
+            key: AWS_SECRET_ACCESS_KEY
+
 ---
 apiVersion: v1
 kind: Service
